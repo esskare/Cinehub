@@ -1,5 +1,7 @@
 
+import os
 from pathlib import Path
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,8 +28,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'myapp.apps.MyappConfig',
-    'main.apps.MainConfig',
+    'myapp.apps.MyappConfig', #added
+    'main.apps.MainConfig', #added
 ]
 
 MIDDLEWARE = [
@@ -74,18 +76,7 @@ MESSAGE_TAGS = {message_constants.DEBUG: 'debug',
                 }
 
 #Database
-""" from git file
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': config('DB_NAME'),
-        'USER': config('DB_USER'),
-        'PASSWORD': config('DB_PASSWORD'),
-        'HOST': config('DB_HOST'),
-        'PORT': config('DB_PORT'),
-    }
-}
-"""
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
