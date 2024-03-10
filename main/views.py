@@ -9,7 +9,7 @@ def home(request):
     context = {
         'mov': movies
     }
-    return render(request,"home.html", context)
+    return render(request, "home.html", context)
 
 def movies(request, id):
     #cin = Cinema.objects.filter(shows__movie=id).distinct()
