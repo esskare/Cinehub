@@ -1,32 +1,51 @@
-"""
-stores information in the database
-"""
-from django.db import models #db models
+from django.db import models
+from django.contrib.auth.models import User
 
-from django.contrib.auth.models import User #authentication
-import uuid #generating unique identifiers
- 
-class BaseModel(models.Model): #models to inherit from
-    uid = models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True)
-    timestamp = models.DateField(auto_now_add=True) #creation of timestamp
-    updated_at = models.DateField(auto_now_add=True) #for the last timestamp update
-     
-    class Meta:
-        abstract = True
-#all of them inherit from the base model
-class MovieCategory(BaseModel):
-    category_name = models.CharField(max_length=100)
-     
-class Movie(BaseModel):
-    category = models.ForeignKey(MovieCategory, on_delete=models.CASCADE, related_name="pizzas") 
-    movie_name = models.CharField(max_length=100)
-    price = models.IntegerField(default=100)
-    images = models.CharField(max_length=500)
-     
-class Cart(BaseModel):
-    user = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, related_name="carts")
-    is_paid = models.BooleanField(default=False) #indicates whether cart is paid or not
-     
-class CartItems(BaseModel):
-    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name="cart_items")
-    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+
+# Create your models here
+
+class Cinema(models.Model):
+    cinema=models.AutoField(primary_key=True)
+    role=models.CharField(max_length=30,default='cinema_manager')
+    cinema_name=models.CharField(max_length=50)
+    phoneno=models.CharField(max_length=15)
+    city=models.CharField(max_length=100)
+    address=models.CharField(max_length=100)
+    user = models.OneToOneField(User,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.cinema_name
+
+class Movie(models.Model):
+    movie=models.AutoField(primary_key=True)
+    movie_name=models.CharField(max_length=50)
+    movie_des=models.TextField()
+    movie_rating=models.DecimalField(max_digits=3, decimal_places=1)
+    movie_poster=models.ImageField(upload_to='movies/poster', default="movies/poster/not.jpg")
+    movie_genre=models.CharField(max_length=50,default="Action | Comedy | Romance")
+    movie_duration=models.CharField(max_length=10, default="2hr 45min")
+
+    def __str__(self):
+        return self.movie_name
+
+class Shows(models.Model):
+    shows=models.AutoField(primary_key=True)
+    cinema=models.ForeignKey('Cinema',on_delete=models.CASCADE, related_name='cinema_show')
+    movie=models.ForeignKey('Movie',on_delete=models.CASCADE, related_name='movie_show')
+    time=models.CharField(max_length=100)
+    date=models.CharField(max_length=15, default="")
+    price=models.IntegerField()
+
+    def __str__(self):
+        return self.cinema.cinema_name +" | "+ self.movie.movie_name +" | "+ self.time
+
+class Bookings(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    shows = models.ForeignKey(Shows, on_delete=models.CASCADE)
+    useat = models.CharField(max_length=100)
+    
+    @property
+    def useat_as_list(self):
+        return self.useat.split(',')
+    def __str__(self):
+        return self.user.username +" | "+ self.shows.movie.movie_name +" | "+ self.useat
