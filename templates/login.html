@@ -1,49 +1,40 @@
-{% extends "base.html" %}
-
+{% extends 'base.html' %}
 {% load static %}
 
-{% block start %}
-<style>
-#goal {
-	border-radius: 35px;
-}
+{% block title %}
+<title>BoxOffice | Home</title>
+{% endblock %}
 
-.mid {
-	margin-left: 42%;
-}
-button{
-    background-color: aqua;
-}
-</style>
+{% block style %}
+<link rel="stylesheet" href= "{% static 'styles/login.css' %}" />
+{% endblock %}
 
-<div class="container mt-5 mx-auto col-md-3 card shadow p-5" id="goal">
-<div class="login-form">
-	{% if messages %}
-	{% for message in messages %}
-	<div class="alert alert-danger {{ message.tags }}" role="alert">
-	{{ message }}
-	</div>
-	{% endfor %}
-	{% endif %}
-	<form action="" method="post">
-	{% csrf_token %}
-	<h2 class="text-center">Login </h2>
-	<div class="form-group">
+{% block content %}
 
-		<input type="text" class="form-control" name="username" placeholder="Username" required>
-
-	</div>
-	<div class="form-group mt-4">
-		<input type="password" class="form-control" name="password" placeholder="Password" required>
-	</div>
-	<div class="form-group mt-4">
-		<button class="btn btn-warning btn-block ">Log In </button>
-	</div>
-
-
-	</form>
-	<p class="text-center"><a href="{% url 'register' %}">Create an Account</a></p>
+<div class="container-fluid">
+    <div class="row justify-content-end">
+        <div class="col-md-5 col-10 login">
+            <form action="login" method="POST" class="text-white">
+                {% csrf_token %}
+                <h1>Login</h1>
+                <div class="form-group">
+                    <label class="form-label">Username</label>
+                    <input class="form-control" type="text" name="username" placeholder="username">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input class="form-control" type="password" name="password" placeholder="password">
+                </div>
+                <input class="btn btn-primary btn-lg" type="submit" value="Login">
+            </form>
+        </div>
+    </div>
 </div>
 
-</div>
+
+{% for message in messages%}
+<h4>{{ message }}</h4>
+{% endfor %}
+
+
 {% endblock %}
