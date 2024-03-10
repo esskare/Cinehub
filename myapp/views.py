@@ -11,7 +11,7 @@ from django.contrib.auth import update_session_auth_hash #new
 
 # Create your views here.
 #loginpage
-def loginpage(request):
+def login(request):
     if request.method=='POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -27,7 +27,7 @@ def loginpage(request):
         return render(request,"login.html")
     
 	#registerpage
-def registerpage(request):
+def register(request):
 
     if request.method == 'POST':
         username = request.POST['username']

@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect
 # Create your views here.
 
 
-def index(request):
+def home(request):
     movies = Movie.objects.all()
     context = {
         'mov': movies
